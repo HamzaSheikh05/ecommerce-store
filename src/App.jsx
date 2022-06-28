@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
+import { useState } from "react";
 
 const products = [
   {
@@ -44,6 +45,9 @@ const products = [
 ];
 
 export default function App() {
+  // Declare a state
+  const [size, setSize] = useState("");
+
   function renderProduct(p) {
     return (
       <div key={p.id} className="product">
@@ -55,7 +59,9 @@ export default function App() {
       </div>
     );
   }
-
+  // look through the list of products and filter out any that do not have selected size
+  const filteredProducts = size ? products.filter((p) => p.skus.find((s) => s.size === parseInt(size)))
+  : products;
   return (
     <>
       <div className="content">
@@ -63,7 +69,7 @@ export default function App() {
         <main>
           <section id="filters">
             <label htmlFor="size">Filter by Size:</label>{" "}
-            <select id="size">
+            <select id="size" value={size} onChange={(e) => setSize(e.target.value)}>
               <option value="">All sizes</option>
               <option value="7">7</option>
               <option value="8">8</option>

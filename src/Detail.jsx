@@ -1,14 +1,21 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import PageNotFound from './PageNotFound';
+import useFetch from './services/useFetch';
+import Spinner from './Spinner';
 
 export default function Detail(){
-    return <h1>Detail</h1>
+    const {id} = useParams();
+    const {data: product, loading, error} = useFetch(`products/${id}`);
+    if (loading) return <Spinner/>
+    if (error) throw error;
 
-    // return(
-    //     <div id='detail'>
-    //         <h1>{products.name}</h1>
-    //         <p>{products.description}</p>
-    //         <p id='price'>${products.price}</p>
-    //         <img src={`/images/${product.image}`} alt={product.category} />
-    //     </div>
-    // );
+    return(
+        <div id='detail'>
+            <h1>{product.name}</h1>
+            <p>{product.description}</p>
+            <p id='price'>${product.price}</p>
+            <img src={`/images/${product.image}`} alt={product.category} />
+        </div>
+    );
 }

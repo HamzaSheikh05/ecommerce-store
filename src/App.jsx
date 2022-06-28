@@ -9,10 +9,11 @@ export default function App() {
   // Declare a state
   const [size, setSize] = useState("");
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
   //Declare useEffect
   useEffect(() => {
-    getProducts("shoes").then((response) => setProducts(response));
+    getProducts("shoes").then((response) => setProducts(response)).catch((e) => setError(e));
   }, [])
 
   function renderProduct(p) {
@@ -29,6 +30,8 @@ export default function App() {
   // look through the list of products and filter out any that do not have selected size
   const filteredProducts = size ? products.filter((p) => p.skus.find((s) => s.size === parseInt(size)))
   : products;
+
+  if (error) throw error;
   return (
     <>
       <div className="content">

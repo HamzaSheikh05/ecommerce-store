@@ -44,7 +44,7 @@ class Detail extends React.Component{
                     disabled={!sku} 
                     className='btn btn-primary' 
                     onClick={() => {
-                        this.context.dispatch({ type: "add", id, sku});
+                        this.context.dispatch({type: "add", id, sku})
                         navigate('/cart')}}>
                         Add to Cart
                     </button>

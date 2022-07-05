@@ -7,6 +7,13 @@ export default function useFetchAll(urls) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Only run if the array of Urls passed in changes
+    if(areEqual(prevUrls.current, urls)) {
+      setLoading(false);
+      return
+    }
+    prevUrls.current = urls;
+
     const promises = urls.map((url) =>
       fetch(process.env.REACT_APP_API_BASE_URL + url).then((response) => {
         if (response.ok) return response.json();

@@ -15,13 +15,14 @@ class Detail extends React.Component{
         sku: ""
     }
 
-    static contextType = CartContext;
     render(){
         const {id, navigate} = this.props;
         const {sku} = this.state;
         
         return(
-            <Fetch url={`products/${id}`}> 
+            <CartContext.Consumer>
+                {({dispatch}) => {
+            return <Fetch url={`products/${id}`}> 
             { (product, loading, error) => {
             if (loading) return <Spinner/>
             if (!product) return <PageNotFound/>
@@ -53,6 +54,8 @@ class Detail extends React.Component{
             }
         }
     </Fetch>
+    }}
+    </CartContext.Consumer>
     );
   }
 }

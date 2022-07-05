@@ -1,4 +1,4 @@
-import { useState,useRef, useEffect } from "react";
+import { useState,useRef, useEffect, Children } from "react";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -43,5 +43,5 @@ export default function useFetch(url){
 
 export function Fetch({url, render}){
     const {data, loading, error} = useFetch(url);
-    return render(data, loading, error);
+    return children(data, loading, error);
 }

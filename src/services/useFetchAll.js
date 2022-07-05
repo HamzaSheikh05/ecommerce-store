@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useRef ,useEffect } from "react";
 
 export default function useFetchAll(urls) {
+  const prevUrls = useRef([]);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

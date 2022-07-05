@@ -21,6 +21,7 @@ export default function cartReducer(cart, action){
                 )
             }
             else {
+                // Return new array with the new item appended
                 return [...cart, {id, sku, quantity: 1}];
             }
 

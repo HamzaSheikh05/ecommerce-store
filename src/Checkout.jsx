@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { saveShippingAddress } from "./services/shippingService";
 
 const STATUS = {
-  IDLE: 'IDLE',
-  SUBMITTED: 'SUBMITTED',
-  SUBMITTING: 'SUBMITTING',
-  COMPLETED: 'COMPLETED'
-}
+  IDLE: "IDLE",
+  SUBMITTED: "SUBMITTED",
+  SUBMITTING: "SUBMITTING",
+  COMPLETED: "COMPLETED",
+};
 
 // Declaring outside component to avoid recreation on each render
 const emptyAddress = {
@@ -20,56 +20,53 @@ export default function Checkout({ cart, dispatch }) {
   const [saveError, setSaveError] = useState(null);
   const [touched, setTouched] = useState({});
 
-  // Derived State
+  // Derived state
   const errors = getErrors(address);
   const isValid = Object.keys(errors).length === 0;
 
   function handleChange(e) {
-    e.persist(); //persist the event
+    e.persist(); // persist the event
     setAddress((curAddress) => {
       return {
         ...curAddress,
         [e.target.id]: e.target.value,
       };
-    })
+    });
   }
 
   function handleBlur(event) {
+    event.persist();
     setTouched((cur) => {
-      return {...cur, [event.target.id]: true};
-    })
+      return { ...cur, [event.target.id]: true };
+    });
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setStatus(STATUS.SUBMITTING);
-    if(isValid){
-      try{
+    if (isValid) {
+      try {
         await saveShippingAddress(address);
-        dispatch({type: "empty"});
+        dispatch({ type: "empty" });
         setStatus(STATUS.COMPLETED);
-      }
-  
-      catch(e){
+      } catch (e) {
         setSaveError(e);
       }
-    }
-
-    else {
+    } else {
       setStatus(STATUS.SUBMITTED);
     }
   }
 
-  function getErrors(address){
+  function getErrors(address) {
     const result = {};
-    if(!address.city) result.city = "City is required!";
-    if(!address.country) result.country = "Country is required!";
+    if (!address.city) result.city = "City is required";
+    if (!address.country) result.country = "Country is required";
     return result;
   }
 
-  if(saveError) throw saveError;
-  if(status === STATUS.COMPLETED){
-    return <h1>Thank you for shopping with us!</h1>
+  if (saveError) throw saveError;
+  if (status === STATUS.COMPLETED) {
+    return <h1>Thanks for shopping!</h1>;
   }
 
   return (
@@ -80,7 +77,7 @@ export default function Checkout({ cart, dispatch }) {
           <p>Please fix the following errors:</p>
           <ul>
             {Object.keys(errors).map((key) => {
-              return <li key={key}>{errors[key]}</li>
+              return <li key={key}>{errors[key]}</li>;
             })}
           </ul>
         </div>
@@ -96,7 +93,9 @@ export default function Checkout({ cart, dispatch }) {
             onBlur={handleBlur}
             onChange={handleChange}
           />
-          <p role="alert">{(touched.city || status === STATUS.SUBMITTED) && errors.city}</p>
+          <p role="alert">
+            {(touched.city || status === STATUS.SUBMITTED) && errors.city}
+          </p>
         </div>
 
         <div>
@@ -114,7 +113,10 @@ export default function Checkout({ cart, dispatch }) {
             <option value="United Kingdom">United Kingdom</option>
             <option value="USA">USA</option>
           </select>
-          <p role="alert">{(touched.country || status === STATUS.SUBMITTED) && errors.country}</p>
+
+          <p role="alert">
+            {(touched.country || status === STATUS.SUBMITTED) && errors.country}
+          </p>
         </div>
 
         <div>

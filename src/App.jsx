@@ -22,34 +22,6 @@ export default function App() {
 
   useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
 
-  function addToCart(id, sku) {
-    setCart((items) => {
-      const itemInCart = items.find((i) => i.sku === sku);
-      if (itemInCart) {
-        // Return new array with matching items replaced
-        return items.map((i) => 
-          i.sku === sku ? {...i, quantity: i.quantity + 1} : i
-        )
-      }
-      else {
-        return [...items, {id, sku, quantity: 1}];
-      }
-    })
-  }
-
-  function updateQuantity(sku, quantity){
-    setCart((items) => {
-      if (quantity === 0){
-        return items.filter((i) => i.sku !== sku)
-      }
-      return items.map((i) => (i.sku === sku ? {...i, quantity} : i));
-    })
-  }
-
-  function emptyCart(){
-    setCart([]);
-  }
-
   return (
     <>
       <div className="content">
